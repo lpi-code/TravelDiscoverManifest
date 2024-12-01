@@ -1,0 +1,13 @@
+resources:
+  - ../../base
+  - frontend-ingress.yaml
+  - backend-ingress.yaml
+
+patchesStrategicMerge:
+  - patches.yaml
+
+images:
+  - name: lpicode/traveldiscover-frontend:latest
+    newTag: latest
+  - name: lpicode/traveldiscover-backend:latest
+    newTag: latest

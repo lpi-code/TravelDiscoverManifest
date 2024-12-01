@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: td-backend
+  labels:
+    app: td-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: td-backend
+  template:
+    metadata:
+      labels:
+        app: td-backend
+    spec:
+      containers:
+      - name: td-backend
+        image: lpicode/traveldiscover-backend:latest
+        ports:
+        - containerPort: 8080
