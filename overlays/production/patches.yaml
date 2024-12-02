@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: td-frontend
+spec:
+  replicas: 1 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: td-backend
+spec:
+  replicas: 1
