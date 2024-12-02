@@ -5,9 +5,6 @@ resources:
   - ../../base/frontend-deployment.yaml
   - ../../base/backend-deployment.yaml
 
-patchesStrategicMerge:
-  - patches.yaml
-
 images:
   - name: lpicode/traveldiscover-frontend:latest
     newTag: latest
