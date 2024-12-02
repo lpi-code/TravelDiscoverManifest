@@ -3,6 +3,8 @@ resources:
   - frontend-ingress.yaml
   - backend-ingress.yaml
 
+namespace: traveldiscover
+
 images:
   - name: lpicode/traveldiscover-frontend:latest
     newTag: latest

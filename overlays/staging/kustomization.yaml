@@ -3,6 +3,9 @@ resources:
   - frontend-ingress.yaml
   - backend-ingress.yaml
 
+namespace: traveldiscover-dev
+namePrefix: dev-
+
 images:
   - name: lpicode/traveldiscover-frontend:latest
     newTag: dev
