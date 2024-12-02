@@ -2,6 +2,7 @@ resources:
   - ../../base
   - frontend-ingress.yaml
   - backend-ingress.yaml
+namespace: traveldiscover-staging
 
 images:
   - name: lpicode/traveldiscover-frontend:latest
