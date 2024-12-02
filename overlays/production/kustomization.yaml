@@ -2,9 +2,6 @@ resources:
   - ../../base
   - frontend-ingress.yaml
   - backend-ingress.yaml
-  # ...existing code...
-  - ../../base/frontend-deployment.yaml
-  - ../../base/backend-deployment.yaml
 
 images:
   - name: lpicode/traveldiscover-frontend:latest
