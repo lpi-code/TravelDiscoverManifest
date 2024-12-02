@@ -1,5 +1,5 @@
 resources:
-  # - frontend-deployment.yaml
-  # - backend-deployment.yaml
+  - frontend-deployment.yaml
+  - backend-deployment.yaml
   - frontend-service.yaml
   - backend-service.yaml
