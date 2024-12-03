@@ -4,5 +4,4 @@ resources:
   - frontend-service.yaml
   - backend-service.yaml
 
-commonLabels:
-  app: traveldiscover
+namespace: default
