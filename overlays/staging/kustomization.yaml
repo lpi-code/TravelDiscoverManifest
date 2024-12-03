@@ -4,7 +4,6 @@ resources:
   - backend-ingress.yaml
 
 namespace: traveldiscover-dev
-namePrefix: dev-
 
 patchesStrategicMerge:
   - patches.yaml
