@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: td-backend
-  namespace: traveldiscover
   labels:
     app: td-backend
 spec:
