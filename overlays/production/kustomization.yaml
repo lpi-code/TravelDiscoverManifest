@@ -5,6 +5,9 @@ resources:
 
 namespace: traveldiscover
 
+patchesStrategicMerge:
+  - patches.yaml
+
 images:
   - name: lpicode/traveldiscover-frontend:latest
     newTag: latest

@@ -6,6 +6,9 @@ resources:
 namespace: traveldiscover-dev
 namePrefix: dev-
 
+patchesStrategicMerge:
+  - patches.yaml
+
 images:
   - name: lpicode/traveldiscover-frontend:latest
     newTag: dev
