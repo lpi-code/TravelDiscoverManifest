@@ -7,3 +7,4 @@ resources:
   - backend-deployment.yaml
   - frontend-service.yaml
   - backend-service.yaml
+namespace: traveldiscover
