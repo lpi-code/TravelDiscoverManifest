@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: td-frontend
   labels:
     app: td-frontend
 spec:

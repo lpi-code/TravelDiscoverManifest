@@ -1,11 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: td-backend
   labels:
     app: td-backend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: td-backend

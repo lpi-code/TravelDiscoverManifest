@@ -1,5 +1,8 @@
 resources:
-  - ../../base
+  - ../../base/frontend-deployment.yaml
+  - ../../base/backend-deployment.yaml
+  - ../../base/frontend-service.yaml
+  - ../../base/backend-service.yaml
   - frontend-ingress.yaml
   - backend-ingress.yaml
 
