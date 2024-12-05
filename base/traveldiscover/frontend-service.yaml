@@ -7,7 +7,8 @@ spec:
   selector:
     app: td-frontend
   ports:
-  - protocol: TCP
-    port: 4200 # Expose the service on internal port 80
-    targetPort: 4200 # Forward incoming requests to port 80
+  - name: http-front
+    protocol: TCP
+    port: 4200
+    targetPort: 4200
   type: ClusterIP
