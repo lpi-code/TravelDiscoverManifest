@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: td-frontend-service
+  name: td-frontend
   namespace: default
 spec:
   selector:
