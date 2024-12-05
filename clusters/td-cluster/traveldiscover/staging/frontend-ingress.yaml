@@ -15,7 +15,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: td-frontend-service
+            name: td-frontend
             port:
               number: 4200
   tls:
