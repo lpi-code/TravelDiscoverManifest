@@ -18,4 +18,4 @@ spec:
       - name: td-frontend
         image: lpicode/traveldiscover-frontend:latest
         ports:
-        - containerPort: 80
+        - containerPort: 4200
