@@ -7,5 +7,6 @@ resources:
   - backend-deployment.yaml
   - frontend-service.yaml
   - backend-service.yaml
+  - traefik.yml
 
 namespace: traveldiscover
