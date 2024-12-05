@@ -5,7 +5,8 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure,web
     traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.tls.certresolver: le
+    cert-manager.io/cluster-issuer: le
+    kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/redirect-entrypoint: websecure
 spec:
   rules:
