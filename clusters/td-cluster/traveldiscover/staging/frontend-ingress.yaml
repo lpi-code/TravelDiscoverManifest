@@ -3,11 +3,11 @@ kind: Ingress
 metadata:
   name: frontend-ingress
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure,web
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure,web"
     traefik.ingress.kubernetes.io/router.tls: "true"
-    cert-manager.io/cluster-issuer: le
-    kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.middlewares: redirect-to-https@kubernetescrd
+    cert-manager.io/cluster-issuer: "le"
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.middlewares: "redirect-to-https@kubernetescrd"
 spec:
   rules:
   - host: staging.traveldiscover.fr
@@ -23,4 +23,4 @@ spec:
   tls:
   - hosts:
     - staging.traveldiscover.fr
-    secretName: td-frontend-tls
+    secretName: td-frontend-tls-dev

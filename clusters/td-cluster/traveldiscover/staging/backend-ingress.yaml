@@ -23,4 +23,4 @@ spec:
   tls:
   - hosts:
     - stagingapi.traveldiscover.fr
-    secretName: td-backend-tls
+    secretName: td-backend-tls-dev
