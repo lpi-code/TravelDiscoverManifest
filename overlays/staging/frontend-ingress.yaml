@@ -17,7 +17,7 @@ spec:
           service:
             name: td-frontend-service
             port:
-              number: 80
+              number: 4200
   tls:
   - hosts:
     - staging.traveldiscover.fr
