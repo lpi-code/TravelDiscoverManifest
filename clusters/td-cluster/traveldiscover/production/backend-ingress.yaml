@@ -1,13 +1,29 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: backend-le
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: contact@traveldiscover.fr 
+    privateKeySecretRef:
+      name: backend-le-account-key
+    solvers:
+    - selector: {}
+      http01:
+        ingress:
+          class: traefik
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: backend-ingress
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure,web
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     traefik.ingress.kubernetes.io/router.tls: "true"
-    cert-manager.io/cluster-issuer: le
-    kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/redirect-entrypoint: websecure
+    cert-manager.io/cluster-issuer: "backend-le"
+    kubernetes.io/ingress.class: "traefik"
 spec:
   rules:
   - host: api.traveldiscover.fr
@@ -19,8 +35,29 @@ spec:
           service:
             name: td-backend
             port:
-              number: 8080
+              number: 4200
   tls:
   - hosts:
     - api.traveldiscover.fr
-    secretName: td-backend-tls
+    secretName: backend-le-account-key
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend-ingress-http
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "web"
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.middlewares: "default-redirect-to-https@kubernetescrd"
+spec:
+  rules:
+  - host: api.traveldiscover.fr
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: td-backend
+            port:
+              number: 4200
