@@ -24,7 +24,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
     cert-manager.io/cluster-issuer: "frontend-le"
     kubernetes.io/ingress.class: "traefik"
-    traefik.ingress.kubernetes.io/router.middlewares: "redirect-to-https@kubernetescrd"
+    traefik.ingress.kubernetes.io/router.middlewares: "redirect-to-https"
 spec:
   rules:
   - host: staging.traveldiscover.fr
