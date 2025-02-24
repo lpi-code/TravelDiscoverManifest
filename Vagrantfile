@@ -58,8 +58,9 @@ Vagrant.configure("2") do |config|
       mkdir -p /vagrant
       cp /etc/rancher/k3s/k3s.yaml /vagrant/kubeconfig
       chmod 600 /vagrant/kubeconfig
-      export KUBECONFIG=/vagrant/kubeconfig
-      echo "export KUBECONFIG=/vagrant/kubeconfig" >> ~/.bashrc
+      chown vagrant:vagrant /vagrant/kubeconfig
+      export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+      echo "export KUBECONFIG=/home/vagrant/kubeconfig" >> /home/vagrant/.bashrc
       sed -i "s/127.0.0.1/$(hostname -I | awk '{print $1}')/g" /vagrant/kubeconfig
       
       # Install Flux
