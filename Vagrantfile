@@ -76,7 +76,8 @@ Vagrant.configure("2") do |config|
         --repository=$GITHUB_REPO \
         --branch=main \
         --path=clusters/#{CLUSTER_NAME} \
-        --personal
+        --personal \
+        --components-extra=image-reflector-controller,image-automation-controller
 
       echo "K3s cluster is ready!"
       echo "Kubeconfig is available at: /vagrant/kubeconfig"
