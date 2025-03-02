@@ -33,7 +33,7 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 10
         volumeMounts:
-        - name: config
+        - name: cloudflared
           mountPath: /etc/cloudflared/config
           readOnly: true
         # Each tunnel has an associated "credentials file" which authorizes machines
