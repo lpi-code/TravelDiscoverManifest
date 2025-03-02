@@ -1,6 +1,7 @@
 resources:
   - cloudflared.yaml
   - ui.yaml
+  - namespace.yaml
 
 configMapGenerator:
   - name: cloudflared
