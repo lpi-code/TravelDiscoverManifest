@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,7 +14,7 @@ spec:
     spec:
       containers:
       - name: traveldiscover-frontend
-        image: docker.io/lpicode/traveldiscover-frontend:0.1.0 # {"$imagepolicy": "flux-system:traveldiscover-frontend"}
+        image: docker.io/lpicode/traveldiscover-frontend:0.1.1 # {"$imagepolicy": "flux-system:traveldiscover-frontend"}
         ports:
         - containerPort: 80
         resources:
