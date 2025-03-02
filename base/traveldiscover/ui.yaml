@@ -1,50 +1,4 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: GitRepository
-metadata:
-  name: traveldiscover-frontend
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  url: https://github.com/lpicode/TravelDiscoverManifest
-  ref:
-    branch: main
----
-apiVersion: image.toolkit.fluxcd.io/v1beta2
-kind: ImagePolicy
-metadata:
-  name: traveldiscover-frontend
-spec:
-  imageRepositoryRef:
-    name: traveldiscover-frontend
-  policy:
-    semver:
-      range: '>=0.1.0'
----
-apiVersion: image.toolkit.fluxcd.io/v1beta2
-kind: ImageUpdateAutomation
-metadata:
-  name: traveldiscover-frontend
-spec:
-  interval: 1m0s
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  git:
-    checkout:
-      ref:
-        branch: main
-    commit:
-      author:
-        email: fluxcdbot@users.noreply.github.com
-        name: fluxcdbot
-      messageTemplate: '{{range .Updated.Images}}{{println .}}{{end}}'
-    push:
-      branch: main
-  update:
-    path: ./base/traveldiscover
-    strategy: Setters
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -61,7 +15,7 @@ spec:
     spec:
       containers:
       - name: traveldiscover-frontend
-        image: docker.io/lpicode/traveldiscover-frontend:0.1.0 # {"$imagepolicy": "traveldiscover:traveldiscover-frontend"}
+        image: docker.io/lpicode/traveldiscover-frontend:0.1.0 # {"$imagepolicy": "flux-system:traveldiscover-frontend"}
         ports:
         - containerPort: 80
         resources:
