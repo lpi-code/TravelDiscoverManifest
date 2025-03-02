@@ -15,7 +15,7 @@ spec:
     name: traveldiscover-frontend
   policy:
     semver:
-      range: v0.x.x
+      range: '>=0.1.0'
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: traveldiscover-frontend
-        image: docker.io/lpicode/traveldiscover-frontend:latest # {"$imagepolicy": "traveldiscover:traveldiscover-frontend"}
+        image: docker.io/lpicode/traveldiscover-frontend:0.1.0 # {"$imagepolicy": "traveldiscover:traveldiscover-frontend"}
         ports:
         - containerPort: 80
         resources:
@@ -55,4 +55,3 @@ spec:
   - port: 80
     targetPort: 80
   type: ClusterIP
-
