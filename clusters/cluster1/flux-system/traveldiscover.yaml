@@ -9,6 +9,6 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: traveldiscover
+    name: flux-system
     namespace: flux-system
   targetNamespace: traveldiscover 
