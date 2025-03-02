@@ -57,5 +57,5 @@ spec:
         configMap:
           name: cloudflared
           items:
-          - key: config.yaml
+          - key: cloudflared.yaml
             path: config.yaml
