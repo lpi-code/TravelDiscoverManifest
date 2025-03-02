@@ -57,5 +57,5 @@ spec:
         configMap:
           name: cloudflared
           items:
-          - key: cloudflared.yaml
+          - key: tunnel-config.yaml
             path: config.yaml
