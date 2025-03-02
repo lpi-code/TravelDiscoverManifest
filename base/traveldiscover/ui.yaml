@@ -35,7 +35,7 @@ spec:
       - name: traveldiscover-frontend
         image: docker.io/lpicode/traveldiscover-frontend:latest # {"$imagepolicy": "traveldiscover:traveldiscover-frontend"}
         ports:
-        - containerPort: 3000
+        - containerPort: 4200
         resources:
           requests:
             cpu: "100m"
@@ -52,7 +52,7 @@ spec:
   selector:
     app: traveldiscover-frontend
   ports:
-  - port: 3000
-    targetPort: 3000
+  - port: 4200
+    targetPort: 4200
   type: ClusterIP
 
