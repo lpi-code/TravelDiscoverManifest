@@ -1,0 +1,58 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: traveldiscover-frontend
+spec:
+  image: docker.io/lpicode/traveldiscover-frontend
+  interval: 5m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: traveldiscover-frontend
+spec:
+  imageRepositoryRef:
+    name: traveldiscover-frontend
+  policy:
+    semver:
+      range: v0.x.x
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traveldiscover-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traveldiscover-frontend
+  template:
+    metadata:
+      labels:
+        app: traveldiscover-frontend
+    spec:
+      containers:
+      - name: traveldiscover-frontend
+        image: docker.io/lpicode/traveldiscover-frontend:latest # {"$imagepolicy": "flux-system:traveldiscover-frontend"}
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traveldiscover-frontend
+spec:
+  selector:
+    app: traveldiscover-frontend
+  ports:
+  - port: 3000
+    targetPort: 3000
+  type: ClusterIP
+

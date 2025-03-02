@@ -1,12 +1,10 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-metadata:
-  name: base
 resources:
-  - frontend-deployment.yaml
-  - backend-deployment.yaml
-  - frontend-service.yaml
-  - backend-service.yaml
-  - traefik.yml
+  - cloudflared.yaml
+  - ui.yaml
+
+configMapGenerator:
+  - name: cloudflared
+    files:
+      - cloudflared.yaml
 
 namespace: traveldiscover
