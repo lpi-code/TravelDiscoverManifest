@@ -6,7 +6,7 @@ metadata:
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: hugs-demo
+  name: hugs
   namespace: llm
 spec:
   chart:
@@ -16,7 +16,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: hugs
-        namespace: flux-system
+        namespace: llm
       version: '*'
   interval: 5m
   values:
