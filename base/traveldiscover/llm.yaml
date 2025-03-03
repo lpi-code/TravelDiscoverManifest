@@ -1,8 +1,8 @@
 apiVersion: ollama.ayaka.io/v1
 kind: Model
 metadata:
-  name: llama3
+  name: traveldiscover
 spec:
-  image: llama3
+  image: deepseek-r1:8b
   persistentVolume:
     accessMode: ReadWriteOnce
