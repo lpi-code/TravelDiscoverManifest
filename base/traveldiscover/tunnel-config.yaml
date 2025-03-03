@@ -19,5 +19,5 @@ ingress:
   - hostname: traveldiscover.fr
     service: http://traveldiscover-frontend:80
   - hostname: api.traveldiscover.fr
-    service: http://traveldiscover-api:80
+    service: http://traveldiscover-backend:4200
   - service: http_status:404

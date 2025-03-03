@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traveldiscover-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traveldiscover-backend
+  template:
+    metadata:
+      labels:
+        app: traveldiscover-backend
+    spec:
+      containers:
+      - name: traveldiscover-backend
+        image: docker.io/lpicode/traveldiscover-backend:0.1.0 # {"$imagepolicy": "flux-system:traveldiscover-backend"}
+        ports:
+        - containerPort: 4200
+        resources:
+          requests:
+            cpu: "400m"
+            memory: "128Mi"
+          limits:
+            cpu: "800m"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traveldiscover-backend
+spec:
+  selector:
+    app: traveldiscover-backend
+  ports:
+  - port: 4200
+    targetPort: 4200
+  type: ClusterIP
