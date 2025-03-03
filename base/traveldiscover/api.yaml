@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: api-config
 data:
-  openai-base-url: http://traveldiscover-openai:11434/v1
+  openai-base-url: http://ollama-model-llama3:11434/v1
   openai-model: llama3-8b-8192
   allow-origins: "https://traveldiscover.fr"
 
