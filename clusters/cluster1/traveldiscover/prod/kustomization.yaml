@@ -1,5 +1,3 @@
 resources:
   - ../../../../base/traveldiscover
-  - cloudflared-credentials.yaml
-  - api-credentials.yaml
 namespace: traveldiscover
