@@ -3,6 +3,4 @@ kind: Model
 metadata:
   name: traveldiscover
 spec:
-  image: deepseek-r1:8b
-  persistentVolume:
-    accessMode: ReadWriteOnce
+  image: 	mixtral:8x22b
