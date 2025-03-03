@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: llm
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: hugs-demo
+  namespace: llm
+spec:
+  chart:
+    spec:
+      chart: hugs
+      interval: 1m
+      sourceRef:
+        kind: HelmRepository
+        name: hugs
+        namespace: flux-system
+      version: '*'
+  interval: 5m
+  values:
+    image:
+      name: nvidia-meta-llama-meta-llama-3.1-8b-instruct
+      repository: hfhugs
+    resources:
+      limits: null
+      requests: null
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: hugs
+  namespace: llm
+spec:
+  interval: 1m
+  url: https://raw.githubusercontent.com/huggingface/hugs-helm-chart/main/charts/hugs
