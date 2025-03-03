@@ -4,3 +4,5 @@ metadata:
   name: traveldiscover
 spec:
   image: llama3
+  persistentVolume:
+    accessMode: ReadWriteOnce
