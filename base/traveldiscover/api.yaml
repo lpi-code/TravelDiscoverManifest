@@ -1,3 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-config
+data:
+  openai-base-url: http://traveldiscover-openai:11434/v1
+  openai-model: llama3-8b-8192
+  allow-origins: "https://traveldiscover.fr"
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,6 +35,45 @@ spec:
           limits:
             cpu: "800m"
             memory: "256Mi"
+        env:
+        - name: AMADEUS_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: api-secrets
+              key: amadeus-api-key
+        - name: AMADEUS_API_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: api-secrets
+              key: amadeus-api-secret
+        - name: HERE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: api-secrets
+              key: here-api-key
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: api-secrets
+              key: openai-api-key
+        - name: OPENAI_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: openai-base-url
+              optional: true
+        - name: ALLOW_ORIGINS
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: allow-origins
+              optional: true
+        - name: OPENAI_MODEL
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: openai-model
+              optional: true
 ---
 apiVersion: v1
 kind: Service
@@ -36,3 +86,4 @@ spec:
   - port: 4200
     targetPort: 4200
   type: ClusterIP
+
