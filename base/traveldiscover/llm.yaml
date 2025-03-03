@@ -3,4 +3,4 @@ kind: Model
 metadata:
   name: traveldiscover
 spec:
-  image: 	mixtral:8x22b
+  image: llama3

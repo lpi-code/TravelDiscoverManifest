@@ -5,7 +5,7 @@ metadata:
   name: api-config
 data:
   openai-base-url: http://ollama-model-traveldiscover:11434/v1
-  openai-model: mixtral:8x22b
+  openai-model: llama3
   allow-origins: "https://traveldiscover.fr"
 
 ---
