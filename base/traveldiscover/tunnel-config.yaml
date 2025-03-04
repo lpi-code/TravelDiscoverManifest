@@ -20,6 +20,6 @@ ingress:
     service: http://traveldiscover-frontend:80
   - hostname: api.traveldiscover.fr
     service: http://traveldiscover-backend:4200
-  - service: http_status:404
   - hostname: grafana.traveldiscover.fr
     service: http://grafana:3000
+  - service: http_status:404
