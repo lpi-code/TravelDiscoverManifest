@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: traveldiscover-backend
-        image: docker.io/lpicode/traveldiscover-backend:0.1.2 # {"$imagepolicy": "flux-system:traveldiscover-backend"}
+        image: docker.io/lpicode/traveldiscover-backend:0.1.3 # {"$imagepolicy": "flux-system:traveldiscover-backend"}
         ports:
         - containerPort: 4200
         resources:
