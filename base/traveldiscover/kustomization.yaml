@@ -4,6 +4,7 @@ resources:
   - namespace.yaml
   - llm.yaml
   - api.yaml
+  - grafana.yaml
 
 configMapGenerator:
   - name: cloudflared
