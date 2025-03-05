@@ -1,6 +1,6 @@
 apiVersion: ollama.ayaka.io/v1
 kind: Model
 metadata:
-  name: qwen2.5
+  name: gemma
 spec:
-  image: qwen2.5:0.5b
+  image: gemma:2b
