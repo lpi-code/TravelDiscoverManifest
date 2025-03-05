@@ -1,6 +1,6 @@
 apiVersion: ollama.ayaka.io/v1
 kind: Model
 metadata:
-  name: llama3
+  name: deepseek-r1:1.5b
 spec:
-  image: llama3
+  image: deepseek-r1:1.5b
