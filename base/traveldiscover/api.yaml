@@ -4,7 +4,7 @@ metadata:
   name: api-config
 data:
   openai-base-url: http://ollama-model-deepseek-r1:11434/v1
-  openai-model: deepseek-r1:1.5b
+  openai-model: deepseek-r1
   allow-origins: "https://traveldiscover.fr"
 ---
 apiVersion: apps/v1
