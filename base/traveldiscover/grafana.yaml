@@ -302,13 +302,12 @@ kind: Service
 metadata:
   name: prometheus-service
   annotations:
-      prometheus.io/scrape: 'true'
-      prometheus.io/port:   '9090'
+    prometheus.io/scrape: 'true'
+    prometheus.io/port:   '9090'
 spec:
-  selector: 
+  selector:
     app: prometheus-server
-  type: NodePort  
+  type: ClusterIP
   ports:
     - port: 8080
-      targetPort: 9090 
-      nodePort: 30000
+      targetPort: 9090
