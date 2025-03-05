@@ -32,3 +32,212 @@ spec:
     kind: GitRepository
     name: flux-system
   path: ./base/monitoring/configs
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: tunnel-credentials
+  namespace: monitoring
+spec:
+  encryptedData:
+    credentials.json: AgDMzoAyxfyuJWAUTLUgV0m4V4BGRJaztZU8DRxz90twgEOB90ZEDv0cdjfKKsEv2BBZx/468UPmt6CVGVP7U9F9cpIKQY45Fs0pMGUdfBYi2U4yvqzDH+DVn99mzJHK/xe8fzJN/vdGrq6te18X1N9lo8fZMzwEZFTXv6bbDg4LyivlAiIiUJpERtWHTFY/HwmyvQs9A7yNjSJYB4+f/bP2KtVFknM7z5gOi2d7QKbSyp2iZTm0X3Px0wdUGPfkwfbJdQ9/fgp7oziGM3Uy/xuDUTJmDOrSeiZXJt/lTjDKDBTTDhZ4K6lQONHRL+PPFitE+HsKqpX9KeGR2Mmm48vnWgqZwCjTQfgrpxY/teCe4BNWZb5/u8SZZas7v3hmIYj8JvsYg9hNSa9zwLPMPjRf4r3yzs5oJkKDGCbImbtp83G2ptdMmsOf1mtQhqwPBLxMTdqHhN0Ub/Hc9BoFnX1PdVqNdSII0ITcwbVdSLadeIupAs9P00GEpaidws3XhJXDi3Tt8PablS4sNhxkCZZud4W79tUSDv7jGMJTI+LCmzxQLGze3b0GM2h3vwSm2mxZ9M6sbQXpNsHSWbm4TJrVdRyCeWRu/oQBYuelX9WKswAIfHChTOLM9xfL0smMinnRWDe5pG95+ooESVVU5CPTas3sBBPG38jIGZ0AJGkkeY8WCWcAR71Jj6XHIaLy3WM6Hhm2yMK9q4a3rfWxW2ENLLikRv8MVNQKJWKYepwgO6auVmtZN3APpRO90yofFdqWJT+KJnpiHDLHq9gHemQEcS/+v7Z+YX5Dnq3tdgNo3whGDe4qGapZSkrXroJU9CLhM0jO/kxkGWCdHwG4D60ZW92a7EWhfet6V3LzSxFZqtFw78MFRATlzuv6J1lrPZ6c7VnFzfkfxQp7DmfOG2qc1A==
+  template:
+    metadata:
+      creationTimestamp: null
+      name: tunnel-credentials
+      namespace: monitoring
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: cloudflared
+  replicas: 2 # You could also consider elastic scaling for this deployment
+  template:
+    metadata:
+      labels:
+        app: cloudflared
+    spec:
+      containers:
+      - name: cloudflared
+        image: cloudflare/cloudflared:2022.3.0
+        args:
+        - tunnel
+        # Points cloudflared to the config file, which configures what
+        # cloudflared will actually do. This file is created by a ConfigMap
+        # below.
+        - --config
+        - /etc/cloudflared/config/config.yaml
+        - run
+        livenessProbe:
+          httpGet:
+            # Cloudflared has a /ready endpoint which returns 200 if and only if
+            # it has an active connection to the edge.
+            path: /ready
+            port: 2000
+          failureThreshold: 1
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        volumeMounts:
+        - name: config
+          mountPath: /etc/cloudflared/config
+          readOnly: true
+        # Each tunnel has an associated "credentials file" which authorizes machines
+        # to run the tunnel. cloudflared will read this file from its local filesystem,
+        # and it'll be stored in a k8s secret.
+        - name: creds
+          mountPath: /etc/cloudflared/creds
+          readOnly: true
+      volumes:
+      - name: creds
+        secret:
+          # By default, the credentials file will be created under ~/.cloudflared/<tunnel ID>.json
+          # when you run `cloudflared tunnel create`. You can move it into a secret by using:
+          # ```sh
+          # kubectl create secret generic tunnel-credentials \
+          # --from-file=credentials.json=/Users/yourusername/.cloudflared/<tunnel ID>.json
+          # ```
+          secretName: tunnel-credentials
+      # Create a config.yaml file from the ConfigMap below.
+      - name: config
+        configMap:
+          name: cloudflared
+          items:
+          - key: config.yaml
+            path: config.yaml
+---
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cloudflared
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: tunnel-credentials
+  namespace: cloudflared
+spec:
+  encryptedData:
+    credentials.json: AgBiuDxF7aztg/3I9rGybUamdN5E9T+onDYzbi+KcKymI2nsGB/s+oCK5sF7i0nWEkEG2k1tMyXGS4nsbpHl6GTHp0Ow8rBg6VnB0eoRh0rev0JJKJYNOZE1l/UDjW3ZDPgOLCc+Wriy+DqTk1wPe18d7h6RUrpvpSqpBn6axEm+9Ox+fFivaeDNe3aate/D8Uu+C/kGOnoW2aC1YWB8Kd68XeBA1wjQBypzPNC3S7j9Lwpb7s6P/DnZHNchKMbDWeWcfo/rIx/m+j78BHLa1PqMUOttaaPvDWUDvwKxbkiAHgtd3L2WlzLsukASpzTjpIMAA2U3OOoA9khlvkT8j1RomfZZeftr/QMBNAYpfHWcIXv5hnrGmep795Gqzuqx+SisfVrryp5ia6yeUkgrffY32w6E5ra1TB9TAt9rNFwT5/xkfSFu1QQkvZBslK4ahbQdtKxMFJ4tcEbSbdjkZJDxRgEYGs4Kr7jYOdOJuz34iPUfQ1SFkK842m3abIGiAWp6oc4pRBwoK1s36qr4AuuSAzsBpDOinJLnblbuLFR+/KA6VeuM0w+JlRtVHXuXlXTOD6PxujUnPuk86BKJSYcUlYsm4D/yHM50eegcVcCctd4mwbljgpIyi2DgajCv0vRKBc07UtQLj1OMcGImXSu9zTw1BuVtMjO7uaSLgkM53wFRMiywY2HdCC05c8LXXw/6zyHtZVs5JMdQKZdNYYZETjDoaJMsL0256IAMDlNjhSyFpXHoQedY55i5Dqomg/1Ib3RocHwX8RDV3eqdWvd1z92CVDmZov5MzlBofWmwN15liMidDm+nskqzrFQ2Bq9atDySrQ5btAjOL4VgyT01Xt6MJQK9FhcfNP81Gxl4PNsvd2eDw0ltT8k/kjwy1w6Bbis8m54Acys8KbFDiInpqQ==
+  template:
+    metadata:
+      creationTimestamp: null
+      name: tunnel-credentials
+      namespace: cloudflared
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared
+  namespace: cloudflared
+spec:
+  selector:
+    matchLabels:
+      app: cloudflared
+  replicas: 2 # You could also consider elastic scaling for this deployment
+  template:
+    metadata:
+      labels:
+        app: cloudflared
+    spec:
+      containers:
+      - name: cloudflared
+        image: cloudflare/cloudflared:2022.3.0
+        args:
+        - tunnel
+        # Points cloudflared to the config file, which configures what
+        # cloudflared will actually do. This file is created by a ConfigMap
+        # below.
+        - --config
+        - /etc/cloudflared/config/config.yaml
+        - run
+        livenessProbe:
+          httpGet:
+            # Cloudflared has a /ready endpoint which returns 200 if and only if
+            # it has an active connection to the edge.
+            path: /ready
+            port: 2000
+          failureThreshold: 1
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        volumeMounts:
+        - name: config
+          mountPath: /etc/cloudflared/config
+          readOnly: true
+        # Each tunnel has an associated "credentials file" which authorizes machines
+        # to run the tunnel. cloudflared will read this file from its local filesystem,
+        # and it'll be stored in a k8s secret.
+        - name: creds
+          mountPath: /etc/cloudflared/creds
+          readOnly: true
+      volumes:
+      - name: creds
+        secret:
+          # By default, the credentials file will be created under ~/.cloudflared/<tunnel ID>.json
+          # when you run `cloudflared tunnel create`. You can move it into a secret by using:
+          # ```sh
+          # kubectl create secret generic tunnel-credentials \
+          # --from-file=credentials.json=/Users/yourusername/.cloudflared/<tunnel ID>.json
+          # ```
+          secretName: tunnel-credentials
+      # Create a config.yaml file from the ConfigMap below.
+      - name: config
+        configMap:
+          name: cloudflared
+          items:
+          - key: config.yaml
+            path: config.yaml
+---
+# This ConfigMap is just a way to define the cloudflared config.yaml file in k8s.
+# It's useful to define it in k8s, rather than as a stand-alone .yaml file, because
+# this lets you use various k8s templating solutions (e.g. Helm charts) to
+# parameterize your config, instead of just using string literals.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudflared
+  namespace: cloudflared
+data:
+  config.yaml: |
+    # Name of the tunnel you want to run
+    tunnel: example-tunnel
+    credentials-file: /etc/cloudflared/creds/credentials.json
+    # Serves the metrics server under /metrics and the readiness server under /ready
+    metrics: 0.0.0.0:2000
+    # Autoupdates applied in a k8s pod will be lost when the pod is removed or restarted, so
+    # autoupdate doesn't make sense in Kubernetes. However, outside of Kubernetes, we strongly
+    # recommend using autoupdate.
+    no-autoupdate: true
+    # The `ingress` block tells cloudflared which local service to route incoming
+    # requests to. For more about ingress rules, see
+    # https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/ingress
+    #
+    # Remember, these rules route traffic from cloudflared to a local service. To route traffic
+    # from the internet to cloudflared, run `cloudflared tunnel route dns <tunnel> <hostname>`.
+    # E.g. `cloudflared tunnel route dns example-tunnel tunnel.example.com`.
+    ingress:
+    # The first rule proxies traffic to the httpbin sample Service defined in app.yaml
+    - hostname: grafana.traveldiscover.fr
+      service: http://kube-prometheus-stack-grafana
+    # This rule matches any traffic which didn't match a previous rule, and responds with HTTP 404.
+    - service: http_status:404
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+  namespace: cloudflared
+spec:
+  selector:
+    app: httpbin
+  ports:
+    - protocol: TCP
+      port: 80
