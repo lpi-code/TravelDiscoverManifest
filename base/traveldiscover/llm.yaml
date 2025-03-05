@@ -1,6 +1,6 @@
 apiVersion: ollama.ayaka.io/v1
 kind: Model
 metadata:
-  name: deepseek-r1:1.5b
+  name: deepseek-r1
 spec:
   image: deepseek-r1:1.5b
