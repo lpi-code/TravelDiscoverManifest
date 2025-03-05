@@ -4,7 +4,7 @@ metadata:
   name: api-config
 data:
   openai-base-url: http://ollama-model-gemma:11434/v1
-  openai-model: gemma:2b
+  openai-model: gemma
   allow-origins: "https://traveldiscover.fr"
 ---
 apiVersion: apps/v1
